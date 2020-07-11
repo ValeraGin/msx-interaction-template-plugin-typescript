@@ -1,6 +1,6 @@
 /******************************************************************************/
 //Template Interaction Plugin
-//(c) 2020 Ignatkovich Valery(typescript version) Benjamin Zachey(original),
+//(c) 2020 Ignatkovich Valery(typescript version), Benjamin Zachey(original),
 /******************************************************************************/
 import * as tvx from './tvx-plugin-module.min';
 import $ from "jquery";
@@ -10,7 +10,7 @@ class InteractionPlugin {
 
     init() {
         this.logger.registerControl($('#log'));
-        this.logger.debug("Init 7");
+        this.logger.debug("Init");
     }
 
     ready() {

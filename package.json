@@ -1,11 +1,11 @@
 {
-  "name": "msx-player",
+  "name": "msx-interaction-template-plugin-typescript",
   "version": "1.0.0",
-  "description": "",
+  "description": "Template for http://msx.benzac.de/js/tvx-plugin-module.min.js. Info: http://msx.benzac.de/info/xp/?tab=PluginReference",
   "scripts": {
-    "start": "echo \"Start msx-player\" && gulp"
+    "start": "echo \"Start build and serve\" && gulp"
   },
-  "author": "ValeraGin",
+  "author": "ValeraGin, Benjamin Zachey",
   "license": "ISC",
   "devDependencies": {
     "@types/jquery": "^3.5.0",
