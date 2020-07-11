@@ -10,7 +10,7 @@ class InteractionPlugin {
 
     init() {
         this.logger.registerControl($('#log'));
-        this.logger.debug("Init");
+        this.logger.debug("Init 7");
     }
 
     ready() {

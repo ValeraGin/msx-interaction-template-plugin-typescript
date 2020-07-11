@@ -1,8 +1,11 @@
+'use strict';
+
 var gulp = require('gulp');
 var browserify = require('browserify');
-var connect = require('gulp-connect');
 var watchify = require('watchify');
 var source = require('vinyl-source-stream');
+var gutil = require('gulp-util');
+var connect = require('gulp-connect');
 var tsify = require('tsify');
 var sourcemaps = require('gulp-sourcemaps');
 var buffer = require('vinyl-buffer');
@@ -10,6 +13,35 @@ var buffer = require('vinyl-buffer');
 var paths = {
     pages: ['src/*.html'],
     styles: ['src/css/*.css'],
+};
+
+var b = function() {
+    return browserify({
+        basedir: '.',
+        debug: true,
+        entries: ['src/main.ts'],
+        cache: {},
+        packageCache: {}
+    })
+};
+
+var w = watchify(b());
+
+w.on('log', gutil.log);
+
+var bundle = function(pkg) {
+    return pkg
+        .plugin(tsify)
+        .transform('babelify', {
+            presets: ['es2015'],
+            extensions: ['.ts']
+        })
+        .bundle()
+        .pipe(source('bundle.js'))
+        .pipe(buffer())
+        .pipe(sourcemaps.init({loadMaps: true}))
+        .pipe(sourcemaps.write('./'))
+        .pipe(gulp.dest('dist'))
 };
 
 gulp.task('copy-html', function () {
@@ -39,33 +71,19 @@ gulp.task('server:test', function () {
     });
 });
 
+gulp.task('watch', function() {
+    bundle(w);
+    w.on('update', bundle.bind(null, w));
+});
 
+gulp.task('build', bundle.bind(null, b()));
 
-gulp.task('default', gulp.series(
- //   gulp.parallel('copy-html'),
-//    gulp.parallel('copy-css'),
-    function () {
-        return watchify(browserify({
-                basedir: '.',
-                debug: true,
-                entries: ['src/main.ts'],
-                cache: {},
-                packageCache: {}
-            })
-        )
-            .plugin(tsify)
-            .transform('babelify', {
-                presets: ['es2015'],
-                extensions: ['.ts']
-            })
-            .bundle()
-            .pipe(source('bundle.js'))
-            .pipe(buffer())
-            .pipe(sourcemaps.init({loadMaps: true}))
-            .pipe(sourcemaps.write('./'))
-            .pipe(gulp.dest('dist'))
-            .pipe(connect.reload());
-    },
-    gulp.parallel('server:test')
-    )
-);
+gulp.task('default', gulp.parallel(
+
+    gulp.parallel(['copy-html', 'copy-css']),
+
+    gulp.series('watch'),
+
+    gulp.series('server:test'),
+
+));
