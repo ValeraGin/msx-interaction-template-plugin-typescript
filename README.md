@@ -3,6 +3,7 @@
   - es5-compatible
   - auto-build
   - typescript
+  - enable cors
 
 ### Development
 
