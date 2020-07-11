@@ -1,0 +1,12 @@
+{
+  "files": [
+    "src/main.ts"
+  ],
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "allowJs": true,
+    "noImplicitAny": true,
+    "target": "es2015",
+    "allowSyntheticDefaultImports": true
+  }
+}
